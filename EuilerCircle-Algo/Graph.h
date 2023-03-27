@@ -20,5 +20,9 @@ public:
 
 	void print() const;
 
+private:
+	bool areAllDegreeEqual();
+	bool isDinEqualDout();
+	bool isConnected();
 };
 #endif // !__GRAPH_H_

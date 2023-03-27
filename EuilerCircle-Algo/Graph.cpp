@@ -43,3 +43,21 @@ void Graph::print() const
 		cout << endl;
 	}
 }
+
+bool Graph::areAllDegreeEqual()
+{
+
+}
+
+bool Graph::isDinEqualDout()
+{
+
+}
+
+bool Graph::isConnected()
+{
+
+}
+
+
+
