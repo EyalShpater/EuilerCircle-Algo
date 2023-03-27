@@ -1,18 +1,17 @@
 #include "Graph.h"
+#include <iostream>
+
+using namespace std;
 
 Graph::Graph(int i_NumOfVertices, int i_numOfEdges, bool i_IsDirected) 
-	: k_IsDirected(i_IsDirected), m_NumOfEdges(i_numOfEdges), m_NumOfVertices(i_NumOfVertices + 1)
+	: k_IsDirected(i_IsDirected), m_NumOfEdges(i_numOfEdges), m_NumOfVertices(i_NumOfVertices)
 {
-	m_Vertices.reserve(m_NumOfVertices + 1);
+	m_Vertices = new list<int>[m_NumOfVertices + 1];
+}
 
-	auto itr = m_Vertices.begin();
-	auto itrEnd = m_Vertices.end();
-
-	while (itr != itrEnd)
-	{
-		(*itr).empty();
-		++itr;
-	}
+Graph::~Graph()
+{
+	delete[]m_Vertices;
 }
 
 void Graph::AddEdge(int i_inVert, int i_OutVert)
@@ -25,7 +24,22 @@ void Graph::AddEdge(int i_inVert, int i_OutVert)
 	}
 }
 
-void Graph::DeleteEdge(int i_inVert, int i_OutVert)
+bool Graph::DeleteEdge(int i_inVert, int i_OutVert)
 {
 
+}
+
+void Graph::print() const
+{
+	for (int i = 1; i <= m_NumOfVertices; ++i)
+	{
+		cout << i << " | ";
+
+		for (auto& edge : m_Vertices[i])
+		{
+			cout << edge << " ";
+		}
+
+		cout << endl;
+	}
 }
