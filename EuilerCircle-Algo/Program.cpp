@@ -23,5 +23,10 @@ int main()
 	cout << endl << "================" << endl;
 	g.print();
 
+	cin >> in >> out;
+	g.DeleteEdge(in, out);
+
+	g.print();
+
 	return 0;
 }

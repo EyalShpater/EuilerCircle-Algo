@@ -24,9 +24,33 @@ void Graph::AddEdge(int i_inVert, int i_OutVert)
 	}
 }
 
-bool Graph::DeleteEdge(int i_inVert, int i_OutVert)
+void Graph::DeleteEdge(int i_inVert, int i_OutVert)
 {
+	m_Vertices[i_inVert].remove(i_OutVert);
 
+	if (!k_IsDirected)
+	{
+		m_Vertices[i_OutVert].remove(i_inVert);
+	}
+}
+
+int* Graph::CreateDegreeArray() // need to check
+{
+	int* degreeArray = new int[m_NumOfVertices + 1] {0};
+
+	for (int i = 1; i <= m_NumOfVertices; i++)
+	{
+		auto currVer = m_Vertices[i].begin();
+		auto endItr = m_Vertices[i].end();
+
+		while (currVer != endItr)
+		{
+			degreeArray[i]++;
+			++currVer;
+		}
+	}
+
+	return degreeArray;
 }
 
 void Graph::print() const
@@ -46,17 +70,17 @@ void Graph::print() const
 
 bool Graph::areAllDegreeEqual()
 {
-
+	return true;
 }
 
 bool Graph::isDinEqualDout()
 {
-
+	return true;
 }
 
 bool Graph::isConnected()
 {
-
+	return true;
 }
 
 

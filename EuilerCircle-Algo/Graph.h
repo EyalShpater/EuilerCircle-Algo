@@ -16,7 +16,7 @@ public:
 	~Graph();
 
 	void AddEdge(int i_inVert, int i_OutVert);
-	bool DeleteEdge(int i_inVert, int i_OutVert);
+	void DeleteEdge(int i_inVert, int i_OutVert);
 
 	void print() const;
 
