@@ -98,6 +98,8 @@ void Graph::Visit(int io_Color[], int i_Vertex) const
 		{
 			Visit(io_Color, *currVer);
 		}
+
+		++currVer;
 	}
 
 	io_Color[i_Vertex] = (int)eColor::BLACK;
@@ -158,7 +160,7 @@ bool Graph::isDinEqualDout() const
 
 bool Graph::notDirectedIsConnected() const
 {
-	int* color = new int[m_NumOfVertices + 1];
+	int* color = new int[m_NumOfVertices + 1] {(int)eColor::WHITE};
 	bool isConnected = true;
 
 	Visit(color, 1);
@@ -178,7 +180,7 @@ bool Graph::notDirectedIsConnected() const
 
 bool Graph::directedIsConnected() const
 {
-
+	return true;
 }
 
 

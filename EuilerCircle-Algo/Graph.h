@@ -22,6 +22,8 @@ public:
 	void AddEdge(int i_inVert, int i_OutVert);
 	void DeleteEdge(int i_inVert, int i_OutVert);
 
+	bool IsConnected() const;
+
 	int* CreateDegreeArray() const;
 	int* CreateInDegreeArray() const;
 	int* CreateOutDegreeArray() const;
@@ -31,8 +33,9 @@ public:
 	void print() const;
 
 private:
-	bool areAllDegreeEqual();
-	bool isDinEqualDout();
-	bool isConnected();
+	bool areAllDegreeEqual() const;
+	bool isDinEqualDout() const;
+	bool notDirectedIsConnected() const;
+	bool directedIsConnected() const;
 };
 #endif // !__GRAPH_H_

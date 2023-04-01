@@ -23,10 +23,9 @@ int main()
 	cout << endl << "================" << endl;
 	g.print();
 
-	cin >> in >> out;
-	g.DeleteEdge(in, out);
+	cout << (g.IsConnected() ? "Connected" : "Not connected :(") << endl;
 
-	g.print();
+	cin >> isDir;
 
 	return 0;
 }
