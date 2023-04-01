@@ -6,6 +6,10 @@ using namespace std;
 
 class Graph
 {
+public:
+	enum class eColor { WHITE, GRAY, BLACK };
+
+private:
 	list<int>* m_Vertices;
 	const bool k_IsDirected;
 	int m_NumOfVertices;
@@ -17,6 +21,12 @@ public:
 
 	void AddEdge(int i_inVert, int i_OutVert);
 	void DeleteEdge(int i_inVert, int i_OutVert);
+
+	int* CreateDegreeArray() const;
+	int* CreateInDegreeArray() const;
+	int* CreateOutDegreeArray() const;
+
+	void Visit(int io_Color[], int i_Vertex) const;
 
 	void print() const;
 

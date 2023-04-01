@@ -34,7 +34,34 @@ void Graph::DeleteEdge(int i_inVert, int i_OutVert)
 	}
 }
 
-int* Graph::CreateDegreeArray() // need to check
+bool Graph::IsConnected() const
+{
+	if (k_IsDirected)
+		return directedIsConnected();
+	else
+		return notDirectedIsConnected();
+}
+
+int* Graph::CreateDegreeArray() const
+{
+	int* degreeArray = new int[m_NumOfVertices + 1] {0};
+
+	for (int i = 1; i <= m_NumOfVertices; i++)
+	{
+		auto currVer = m_Vertices[i].begin();
+		auto endItr = m_Vertices[i].end();
+		
+		while (currVer != endItr)
+		{
+			degreeArray[i]++;
+			++currVer;
+		}
+	}
+
+	return degreeArray;
+}
+
+int* Graph::CreateInDegreeArray() const
 {
 	int* degreeArray = new int[m_NumOfVertices + 1] {0};
 
@@ -45,12 +72,35 @@ int* Graph::CreateDegreeArray() // need to check
 
 		while (currVer != endItr)
 		{
-			degreeArray[i]++;
+			degreeArray[*currVer]++;
 			++currVer;
 		}
 	}
 
 	return degreeArray;
+}
+
+int* Graph::CreateOutDegreeArray() const
+{
+	return CreateDegreeArray();
+}
+
+void Graph::Visit(int io_Color[], int i_Vertex) const
+{
+	io_Color[i_Vertex] = (int)eColor::GRAY;
+
+	auto currVer = m_Vertices[i_Vertex].begin();
+	auto endItr = m_Vertices[i_Vertex].end();
+
+	while (currVer != endItr)
+	{
+		if (io_Color[*currVer] == (int)eColor::WHITE)
+		{
+			Visit(io_Color, *currVer);
+		}
+	}
+
+	io_Color[i_Vertex] = (int)eColor::BLACK;
 }
 
 void Graph::print() const
@@ -68,19 +118,67 @@ void Graph::print() const
 	}
 }
 
-bool Graph::areAllDegreeEqual()
+bool Graph::areAllDegreeEqual() const
 {
-	return true;
+	int* degree = CreateDegreeArray();
+	bool isAllEqual = true;
+
+	for (int i = 1; i <= m_NumOfVertices; i++)
+	{
+		if (degree[i] % 2 != 0)
+		{
+			isAllEqual = false;
+		}
+	}
+
+	delete[]degree;
+
+	return isAllEqual;
 }
 
-bool Graph::isDinEqualDout()
+bool Graph::isDinEqualDout() const
 {
-	return true;
+	int* inDegree = CreateInDegreeArray();
+	int* outDegree = CreateOutDegreeArray();
+	bool isAllEqual = true;
+
+	for (int i = 1; i <= m_NumOfVertices; i++)
+	{
+		if (inDegree[i] != outDegree[i])
+		{
+			isAllEqual = false;
+		}
+	}
+
+	delete[]inDegree;
+	delete[]outDegree;
+
+	return isAllEqual;
 }
 
-bool Graph::isConnected()
+bool Graph::notDirectedIsConnected() const
 {
-	return true;
+	int* color = new int[m_NumOfVertices + 1];
+	bool isConnected = true;
+
+	Visit(color, 1);
+
+	for (int i = 1; i <= m_NumOfVertices; i++)
+	{
+		if (color[i] == (int)eColor::WHITE)
+		{
+			isConnected = false;
+		}
+	}
+
+	delete[]color;
+
+	return isConnected;
+}
+
+bool Graph::directedIsConnected() const
+{
+
 }
 
 
