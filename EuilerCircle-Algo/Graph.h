@@ -31,11 +31,12 @@ public:
 	void Visit(int io_Color[], int i_Vertex) const;
 
 	void print() const;
-
+	
 private:
 	bool areAllDegreeEqual() const;
 	bool isDinEqualDout() const;
 	bool notDirectedIsConnected() const;
 	bool directedIsConnected() const;
+	Graph createGraphTranspose() const;
 };
 #endif // !__GRAPH_H_

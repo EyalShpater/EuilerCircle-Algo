@@ -180,8 +180,33 @@ bool Graph::notDirectedIsConnected() const
 
 bool Graph::directedIsConnected() const
 {
-	return true;
+	bool isConnected = notDirectedIsConnected();
+
+	if(isConnected)
+	{
+		Graph trans = createGraphTranspose();
+
+		isConnected = trans.notDirectedIsConnected();
+	}
+
+	return isConnected;
 }
 
+Graph Graph::createGraphTranspose() const
+{
+	Graph res(m_NumOfVertices, m_NumOfEdges, k_IsDirected);
 
+	for (int i = 1; i <= m_NumOfVertices; i++)
+	{
+		auto currVer = m_Vertices[i].begin();
+		auto endItr = m_Vertices[i].end();
 
+		while (currVer != endItr)
+		{
+			res.AddEdge(*currVer, i);
+			++currVer;
+		}
+	}
+
+	return res;
+}
