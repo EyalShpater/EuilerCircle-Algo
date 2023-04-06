@@ -1,43 +1,38 @@
 #include "Graph.h"
-
-#include <iostream>
+#include <list>
 #include <algorithm>
+#include <iostream>
 using namespace std;
 
 void print(int num) { cout << num << " "; }
 
 int main()
 {
-	//int in, out;
-	int numOfVer = 6, numOfEdges = 10;
-	bool isDir = false;
+	int numOfVer, numOfEdges;
+	char answer;
+	bool isDir, isEulerian;
+	list<int> euler;
 
-	//cin >> numOfVer >> numOfEdges >> isDir;
+	cout << "Is the graph directed : y / n" << endl;
+	cin >> answer >> numOfVer >> numOfEdges;
+	isDir = (answer == 'y');
 
 	Graph g(numOfVer, numOfEdges, isDir);
 
-	g.AddEdge(1, 2);
-	g.AddEdge(1, 3);
-	g.AddEdge(2, 3);
-	g.AddEdge(2, 4);
-	g.AddEdge(2, 5);
-	g.AddEdge(3, 4);
-	g.AddEdge(3, 5);
-	g.AddEdge(4, 5);
-	g.AddEdge(4, 6);
-	g.AddEdge(5, 6);
-	
-	cout << endl << "================" << endl;
-	g.print();
+	for (int i = 1; i <= numOfEdges; i++)
+	{
+		int in, out;
 
-	cout << (g.IsConnected() ? "Connected" : "Not connected :(") << endl;
+		cin >> in >> out;
+		g.AddEdge(in, out);
+	}
 
-	cout << endl << "================" << endl;
-
-	list<int> cir;
-	g.Euler(cir);
-
-	for_each(cir.begin(), cir.end(), print);
+	isEulerian = g.Euler(euler);
+	if (isEulerian)
+	{
+		cout << "The graph is aulerian" << endl;
+		for_each(euler.begin(), euler.end(), [](int n) { cout << n << " "; });
+	}
 
 	return 0;
 }
