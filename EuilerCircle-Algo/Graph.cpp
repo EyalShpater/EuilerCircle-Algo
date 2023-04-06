@@ -110,18 +110,21 @@ void Graph::Visit(int io_Color[], int i_Vertex) const
 
 list<int> Graph::FindCircuit(int i_Vertex)
 {
+	int currentVertex = i_Vertex;
+	Edge* neighbour;
 	list<int> circuit;
-	list<Edge>::iterator* nextUnmarkedEdge = createMarkedEdgesArray();
+	vector<list<Edge>::iterator> nextUnmarkedEdge = createMarkedEdgesArray();
 
 	circuit.push_back(i_Vertex);
-	do 
+	while (nextUnmarkedEdge[i_Vertex] != m_Vertices[i_Vertex].end()) 
 	{
-		
+		neighbour = &(*(nextUnmarkedEdge[currentVertex]));
+		markEdge(*neighbour);
+		circuit.push_back(neighbour->m_Vertix);
+		currentVertex = neighbour->m_Vertix;
+		findNextUnmarkedEdge(nextUnmarkedEdge, currentVertex);
+	} 
 
-	} while (nextUnmarkedEdge[i_Vertex] == m_Vertices[i_Vertex].end());
-
-
-	delete[]nextUnmarkedEdge;
 	resetMarks();
 
 	return circuit;
@@ -233,13 +236,14 @@ Graph Graph::createGraphTranspose() const
 	return res;
 }
 
-list<Graph::Edge>::iterator* Graph::createMarkedEdgesArray() const
+vector<list<Graph::Edge>::iterator> Graph::createMarkedEdgesArray() const
 {
-	list<Edge>::iterator* res = new list<Edge>::iterator[m_NumOfVertices + 1];
+	vector<list<Edge>::iterator> res;
 
-	for (int i = 1; i <= m_NumOfVertices; i++)
+	res.reserve(m_NumOfVertices + 1);
+	for (int i = 0; i <= m_NumOfVertices; i++)
 	{
-		res[i] = m_Vertices[i].begin();
+		res.push_back(m_Vertices[i].begin());
 	}
 
 	return res;
@@ -255,6 +259,7 @@ void Graph::resetMarks()
 		while (currVer != endItr)
 		{
 			(*currVer).m_IsMarked = false;
+			++currVer;
 		}
 	}
 }
@@ -268,7 +273,7 @@ void Graph::markEdge(Edge& io_Edge)
 	}
 }
 
-void Graph::findNextUnmarkedEdge(list<Edge>::iterator* io_EdgesArray, int i_CurrentVertex) const
+void Graph::findNextUnmarkedEdge(vector<list<Edge>::iterator>& io_EdgesArray, int i_CurrentVertex) const
 {
 	while (io_EdgesArray[i_CurrentVertex] != m_Vertices[i_CurrentVertex].end() && 
 		io_EdgesArray[i_CurrentVertex]->m_IsMarked)

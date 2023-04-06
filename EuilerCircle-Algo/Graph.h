@@ -2,6 +2,7 @@
 #define __GRAPH_H_
 
 #include <list>
+#include <vector>
 using namespace std;
 
 class Graph
@@ -12,7 +13,7 @@ class Graph
 		bool m_IsMarked;
 		Edge* m_Parallel;
 
-		Edge(int i_Vertix, Edge* i_Parallel = nullptr) : m_Vertix(i_Vertix), 
+		Edge(int i_Vertix = 0, Edge* i_Parallel = nullptr) : m_Vertix(i_Vertix),
 			m_IsMarked(false), m_Parallel(i_Parallel) {}
 
 		bool operator==(int i_Vertex) const
@@ -44,7 +45,7 @@ public:
 	int* CreateOutDegreeArray() const;
 
 	void Visit(int io_Color[], int i_Vertex) const;
-	list<Edge> FindCircuit(int i_Vertex);
+	list<int> FindCircuit(int i_Vertex);
 
 	void print() const;
 	
@@ -54,5 +55,9 @@ private:
 	bool notDirectedIsConnected() const;
 	bool directedIsConnected() const;
 	Graph createGraphTranspose() const;
+	vector<list<Edge>::iterator> createMarkedEdgesArray() const;
+	void resetMarks();
+	void markEdge(Edge& io_Edge);
+	void findNextUnmarkedEdge(vector<list<Edge>::iterator>& io_EdgesArray, int i_CurrentVertex) const;
 };
 #endif // !__GRAPH_H_

@@ -1,7 +1,10 @@
 #include "Graph.h"
 
 #include <iostream>
+#include <algorithm>
 using namespace std;
+
+void print(int num) { cout << num << " "; }
 
 int main()
 {
@@ -31,7 +34,9 @@ int main()
 
 	cout << endl << "================" << endl;
 
-	
+	list<int> cir = g.FindCircuit(1);
+
+	for_each(cir.begin(), cir.end(), print);
 
 	return 0;
 }
