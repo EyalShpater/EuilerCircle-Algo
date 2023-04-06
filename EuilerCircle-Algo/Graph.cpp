@@ -45,6 +45,13 @@ bool Graph::IsConnected() const
 		return notDirectedIsConnected();
 }
 
+bool Graph::IsEulerian() const
+{
+	bool isDegreeCondition = k_IsDirected ? isDinEqualDout() : areAllDegreeEven();
+
+	return isDegreeCondition && IsConnected();
+}
+
 int* Graph::CreateDegreeArray() const
 {
 	int* degreeArray = new int[m_NumOfVertices + 1] {0};
@@ -108,26 +115,49 @@ void Graph::Visit(int io_Color[], int i_Vertex) const
 	io_Color[i_Vertex] = (int)eColor::BLACK;
 }
 
-list<int> Graph::FindCircuit(int i_Vertex)
+list<int> Graph::FindCircuit(int i_Vertex, vector<list<Edge>::iterator>& io_NextUnmarkedEdge)
 {
 	int currentVertex = i_Vertex;
 	Edge* neighbour;
 	list<int> circuit;
-	vector<list<Edge>::iterator> nextUnmarkedEdge = createMarkedEdgesArray();
 
 	circuit.push_back(i_Vertex);
-	while (nextUnmarkedEdge[i_Vertex] != m_Vertices[i_Vertex].end()) 
+	while (io_NextUnmarkedEdge[i_Vertex] != m_Vertices[i_Vertex].end())
 	{
-		neighbour = &(*(nextUnmarkedEdge[currentVertex]));
-		markEdge(*neighbour);
+		neighbour = &(*(io_NextUnmarkedEdge[currentVertex]));
+		markEdge(*neighbour); // opposite
 		circuit.push_back(neighbour->m_Vertix);
 		currentVertex = neighbour->m_Vertix;
-		findNextUnmarkedEdge(nextUnmarkedEdge, currentVertex);
+		findNextUnmarkedEdge(io_NextUnmarkedEdge, currentVertex);
 	} 
 
-	resetMarks();
-
 	return circuit;
+}
+
+bool Graph::Euler(list<int>& o_Circle)
+{
+	bool isEuler = IsEulerian();
+
+	if (isEuler)
+	{
+		vector<list<Edge>::iterator> nextUnmarkedEdge = createMarkedEdgesArray();
+		list<int>::iterator currentVertex, toAdd;
+		list<int> tempCircle;
+
+		o_Circle = FindCircuit(1, nextUnmarkedEdge);
+		currentVertex = findNextUnmarkedVertex(nextUnmarkedEdge, o_Circle);
+		while (currentVertex != o_Circle.end())
+		{
+			tempCircle = FindCircuit(*currentVertex, nextUnmarkedEdge);
+			toAdd = (o_Circle.erase(currentVertex));
+			o_Circle.splice(toAdd, tempCircle);
+			currentVertex = findNextUnmarkedVertex(nextUnmarkedEdge, o_Circle);
+		}
+
+		resetMarks();
+	}
+
+	return isEuler;
 }
 
 void Graph::print() const
@@ -145,22 +175,22 @@ void Graph::print() const
 	}
 }
 
-bool Graph::areAllDegreeEqual() const
+bool Graph::areAllDegreeEven() const
 {
 	int* degree = CreateDegreeArray();
-	bool isAllEqual = true;
+	bool isAllEven = true;
 
 	for (int i = 1; i <= m_NumOfVertices; i++)
 	{
 		if (degree[i] % 2 != 0)
 		{
-			isAllEqual = false;
+			isAllEven = false;
 		}
 	}
 
 	delete[]degree;
 
-	return isAllEqual;
+	return isAllEven;
 }
 
 bool Graph::isDinEqualDout() const
@@ -280,4 +310,27 @@ void Graph::findNextUnmarkedEdge(vector<list<Edge>::iterator>& io_EdgesArray, in
 	{
 		++io_EdgesArray[i_CurrentVertex];
 	}
+}
+
+list<int>::iterator Graph::findNextUnmarkedVertex(vector<list<Edge>::iterator>& io_VertexArray, list<int>& i_VertexList)
+{
+	bool found = false;
+	list<int>::iterator unmarkedVertex = i_VertexList.end();
+	list<int>::iterator itr = i_VertexList.begin();
+	list<int>::iterator itrEnd = i_VertexList.end();
+
+
+	while (itr != itrEnd && !found)
+	{
+		findNextUnmarkedEdge(io_VertexArray, *itr);
+		if (io_VertexArray[*itr] != m_Vertices[*itr].end())
+		{
+			unmarkedVertex = itr;
+			found = true;
+		}
+
+		++itr;
+	}
+
+	return unmarkedVertex;
 }

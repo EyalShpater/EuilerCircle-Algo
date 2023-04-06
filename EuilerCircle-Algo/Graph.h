@@ -39,18 +39,20 @@ public:
 	void DeleteEdge(int i_inVert, int i_OutVert);
 
 	bool IsConnected() const;
+	bool IsEulerian() const;
 
 	int* CreateDegreeArray() const;
 	int* CreateInDegreeArray() const;
 	int* CreateOutDegreeArray() const;
 
 	void Visit(int io_Color[], int i_Vertex) const;
-	list<int> FindCircuit(int i_Vertex);
+	list<int> FindCircuit(int i_Vertex, vector<list<Edge>::iterator>& io_NextUnmarkedEdge);
+	bool Euler(list<int>& o_Circle);
 
 	void print() const;
 	
 private:
-	bool areAllDegreeEqual() const;
+	bool areAllDegreeEven() const;
 	bool isDinEqualDout() const;
 	bool notDirectedIsConnected() const;
 	bool directedIsConnected() const;
@@ -59,5 +61,6 @@ private:
 	void resetMarks();
 	void markEdge(Edge& io_Edge);
 	void findNextUnmarkedEdge(vector<list<Edge>::iterator>& io_EdgesArray, int i_CurrentVertex) const;
+	list<int>::iterator findNextUnmarkedVertex(vector<list<Edge>::iterator>& io_VertexArray, list<int>& i_VertexList);
 };
 #endif // !__GRAPH_H_

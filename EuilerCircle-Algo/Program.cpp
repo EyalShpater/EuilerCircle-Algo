@@ -34,7 +34,8 @@ int main()
 
 	cout << endl << "================" << endl;
 
-	list<int> cir = g.FindCircuit(1);
+	list<int> cir;
+	g.Euler(cir);
 
 	for_each(cir.begin(), cir.end(), print);
 
