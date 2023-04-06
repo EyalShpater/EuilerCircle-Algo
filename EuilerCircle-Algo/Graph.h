@@ -9,9 +9,11 @@ class Graph
 	struct Edge
 	{
 		int m_Vertix;
+		bool m_IsMarked;
 		Edge* m_Parallel;
 
-		Edge(int i_Vertix, Edge* i_Parallel = nullptr) : m_Vertix(i_Vertix), m_Parallel(i_Parallel) {}
+		Edge(int i_Vertix, Edge* i_Parallel = nullptr) : m_Vertix(i_Vertix), 
+			m_IsMarked(false), m_Parallel(i_Parallel) {}
 
 		bool operator==(int i_Vertex) const
 		{
