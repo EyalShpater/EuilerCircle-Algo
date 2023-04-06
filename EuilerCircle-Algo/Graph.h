@@ -29,6 +29,7 @@ public:
 	int* CreateOutDegreeArray() const;
 
 	void Visit(int io_Color[], int i_Vertex) const;
+	list<int> FindCircuit(int i_Vertex);
 
 	void print() const;
 	

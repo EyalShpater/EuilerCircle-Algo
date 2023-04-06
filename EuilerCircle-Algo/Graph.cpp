@@ -105,6 +105,13 @@ void Graph::Visit(int io_Color[], int i_Vertex) const
 	io_Color[i_Vertex] = (int)eColor::BLACK;
 }
 
+list<int> FindCircuit(int i_Vertex)
+{
+	list<int> circuit;
+
+
+}
+
 void Graph::print() const
 {
 	for (int i = 1; i <= m_NumOfVertices; ++i)
