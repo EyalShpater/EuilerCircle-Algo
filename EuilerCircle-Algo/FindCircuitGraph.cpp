@@ -11,8 +11,13 @@ FindCircuitGraph::FindCircuitGraph(Graph& i_SourceGraph) : Graph(i_SourceGraph)
 
 		for (; itr != itrEnd; ++itr)
 		{
-			m_DetailedVertices[i].m_ListHead.push_back(Edge(*itr, nullptr));
+			//m_DetailedVertices[i].m_ListHead.push_back(Edge(*itr, nullptr));
 			m_DetailedVertices[i].m_NextMarked = &m_DetailedVertices[i].m_ListHead.front();
+
+			if (!k_IsDirected)
+			{
+
+			}
 		}
 	}
 

@@ -6,7 +6,7 @@ using namespace std;
 Graph::Graph(int i_NumOfVertices, int i_numOfEdges, bool i_IsDirected) 
 	: k_IsDirected(i_IsDirected), m_NumOfEdges(i_numOfEdges), m_NumOfVertices(i_NumOfVertices)
 {
-	m_Vertices = new list<int>[m_NumOfVertices + 1];
+	m_Vertices = new list<Edge>[m_NumOfVertices + 1];
 }
 
 Graph::~Graph()
@@ -14,25 +14,28 @@ Graph::~Graph()
 	delete[]m_Vertices;
 }
 
-void Graph::AddEdge(int i_inVert, int i_OutVert)
+void Graph::AddEdge(int i_InVert, int i_OutVert)
 {
-	m_Vertices[i_inVert].push_back(i_OutVert);
+	m_Vertices[i_InVert].push_back(Edge(i_OutVert, nullptr));
 
 	if (!k_IsDirected)
 	{
-		m_Vertices[i_OutVert].push_back(i_inVert);
+		Edge* lastEdge = &(m_Vertices[i_InVert].back());
+		m_Vertices[i_OutVert].push_back(Edge(i_InVert, lastEdge));
+		lastEdge = &(m_Vertices[i_OutVert].back());
+		m_Vertices[i_InVert].back().m_Parallel = lastEdge;
 	}
 }
 
-void Graph::DeleteEdge(int i_inVert, int i_OutVert)
-{
-	m_Vertices[i_inVert].remove(i_OutVert);
-
-	if (!k_IsDirected)
-	{
-		m_Vertices[i_OutVert].remove(i_inVert);
-	}
-}
+//void Graph::DeleteEdge(int i_inVert, int i_OutVert)
+//{
+//	m_Vertices[i_inVert].remove(i_OutVert);
+//
+//	if (!k_IsDirected)
+//	{
+//		m_Vertices[i_OutVert].remove(i_inVert);
+//	}
+//}
 
 bool Graph::IsConnected() const
 {
@@ -72,7 +75,7 @@ int* Graph::CreateInDegreeArray() const
 
 		while (currVer != endItr)
 		{
-			degreeArray[*currVer]++;
+			degreeArray[(*currVer).m_Vertix]++;
 			++currVer;
 		}
 	}
@@ -94,9 +97,9 @@ void Graph::Visit(int io_Color[], int i_Vertex) const
 
 	while (currVer != endItr)
 	{
-		if (io_Color[*currVer] == (int)eColor::WHITE)
+		if (io_Color[(*currVer).m_Vertix] == (int)eColor::WHITE)
 		{
-			Visit(io_Color, *currVer);
+			Visit(io_Color, (*currVer).m_Vertix);
 		}
 
 		++currVer;
@@ -105,12 +108,12 @@ void Graph::Visit(int io_Color[], int i_Vertex) const
 	io_Color[i_Vertex] = (int)eColor::BLACK;
 }
 
-list<int> FindCircuit(int i_Vertex)
-{
-	list<int> circuit;
-
-
-}
+//list<int> FindCircuit(int i_Vertex)
+//{
+//	list<int> circuit;
+//
+//	return;
+//}
 
 void Graph::print() const
 {
@@ -120,7 +123,7 @@ void Graph::print() const
 
 		for (auto& edge : m_Vertices[i])
 		{
-			cout << edge << " ";
+			cout << edge.m_Vertix << " ";
 		}
 
 		cout << endl;
@@ -210,7 +213,7 @@ Graph Graph::createGraphTranspose() const
 
 		while (currVer != endItr)
 		{
-			res.AddEdge(*currVer, i);
+			res.AddEdge((*currVer).m_Vertix, i);
 			++currVer;
 		}
 	}

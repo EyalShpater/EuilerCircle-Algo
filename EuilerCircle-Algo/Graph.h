@@ -6,11 +6,24 @@ using namespace std;
 
 class Graph
 {
+	struct Edge
+	{
+		int m_Vertix;
+		Edge* m_Parallel;
+
+		Edge(int i_Vertix, Edge* i_Parallel = nullptr) : m_Vertix(i_Vertix), m_Parallel(i_Parallel) {}
+
+		bool operator==(int i_Vertex) const
+		{
+			return i_Vertex == m_Vertix;
+		}
+	};
+
 public:
 	enum class eColor { WHITE, GRAY, BLACK };
 
-private:
-	list<int>* m_Vertices;
+protected:
+	list<Edge>* m_Vertices;
 	const bool k_IsDirected;
 	int m_NumOfVertices;
 	int m_NumOfEdges;
@@ -29,7 +42,7 @@ public:
 	int* CreateOutDegreeArray() const;
 
 	void Visit(int io_Color[], int i_Vertex) const;
-	list<int> FindCircuit(int i_Vertex);
+	list<Edge> FindCircuit(int i_Vertex);
 
 	void print() const;
 	
