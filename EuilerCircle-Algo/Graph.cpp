@@ -16,7 +16,7 @@ Graph::~Graph()
 
 void Graph::AddEdge(int i_InVert, int i_OutVert)
 {
-	m_Vertices[i_InVert].push_back(Edge(i_OutVert, nullptr));
+	m_Vertices[i_InVert].push_back(Edge(i_OutVert));
 
 	if (!k_IsDirected)
 	{
@@ -27,22 +27,26 @@ void Graph::AddEdge(int i_InVert, int i_OutVert)
 	}
 }
 
-//void Graph::DeleteEdge(int i_inVert, int i_OutVert)
-//{
-//	m_Vertices[i_inVert].remove(i_OutVert);
-//
-//	if (!k_IsDirected)
-//	{
-//		m_Vertices[i_OutVert].remove(i_inVert);
-//	}
-//}
+void Graph::DeleteEdge(int i_inVert, int i_OutVert)
+{
+	m_Vertices[i_inVert].remove(i_OutVert);
+
+	if (!k_IsDirected)
+	{
+		m_Vertices[i_OutVert].remove(i_inVert);
+	}
+}
 
 bool Graph::IsConnected() const
 {
 	if (k_IsDirected)
+	{
 		return directedIsConnected();
+	}
 	else
+	{
 		return notDirectedIsConnected();
+	}
 }
 
 bool Graph::IsEulerian() const
@@ -125,7 +129,7 @@ list<int> Graph::FindCircuit(int i_Vertex, vector<list<Edge>::iterator>& io_Next
 	while (io_NextUnmarkedEdge[i_Vertex] != m_Vertices[i_Vertex].end())
 	{
 		neighbour = &(*(io_NextUnmarkedEdge[currentVertex]));
-		markEdge(*neighbour); // opposite
+		markEdge(*neighbour);
 		circuit.push_back(neighbour->m_Vertix);
 		currentVertex = neighbour->m_Vertix;
 		findNextUnmarkedEdge(io_NextUnmarkedEdge, currentVertex);
@@ -160,12 +164,11 @@ bool Graph::Euler(list<int>& o_Circle)
 	return isEuler;
 }
 
-void Graph::print() const
+void Graph::Print() const
 {
 	for (int i = 1; i <= m_NumOfVertices; ++i)
 	{
 		cout << i << " | ";
-
 		for (auto& edge : m_Vertices[i])
 		{
 			cout << edge.m_Vertix << " ";

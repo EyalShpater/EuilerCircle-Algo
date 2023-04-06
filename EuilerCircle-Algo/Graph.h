@@ -16,9 +16,9 @@ class Graph
 		Edge(int i_Vertix = 0, Edge* i_Parallel = nullptr) : m_Vertix(i_Vertix),
 			m_IsMarked(false), m_Parallel(i_Parallel) {}
 
-		bool operator==(int i_Vertex) const
+		bool operator==(const Edge& other) const
 		{
-			return i_Vertex == m_Vertix;
+			return m_Vertix == other.m_Vertix;
 		}
 	};
 
@@ -49,7 +49,7 @@ public:
 	list<int> FindCircuit(int i_Vertex, vector<list<Edge>::iterator>& io_NextUnmarkedEdge);
 	bool Euler(list<int>& o_Circle);
 
-	void print() const;
+	void Print() const;
 	
 private:
 	bool areAllDegreeEven() const;
