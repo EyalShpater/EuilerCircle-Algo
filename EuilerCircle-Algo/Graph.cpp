@@ -1,6 +1,5 @@
 #include "Graph.h"
 #include <iostream>
-
 using namespace std;
 
 Graph::Graph(int i_NumOfVertices, int i_numOfEdges, bool i_IsDirected) 
@@ -86,7 +85,7 @@ int* Graph::CreateInDegreeArray() const
 
 		while (currVer != endItr)
 		{
-			degreeArray[(*currVer).m_Vertix]++;
+			degreeArray[(*currVer).m_Vertex]++;
 			++currVer;
 		}
 	}
@@ -108,9 +107,9 @@ void Graph::Visit(int io_Color[], int i_Vertex) const
 
 	while (currVer != endItr)
 	{
-		if (io_Color[(*currVer).m_Vertix] == (int)eColor::WHITE)
+		if (io_Color[(*currVer).m_Vertex] == (int)eColor::WHITE)
 		{
-			Visit(io_Color, (*currVer).m_Vertix);
+			Visit(io_Color, (*currVer).m_Vertex);
 		}
 
 		++currVer;
@@ -130,8 +129,8 @@ list<int> Graph::FindCircuit(int i_Vertex, vector<list<Edge>::iterator>& io_Next
 	{
 		neighbour = &(*(io_NextUnmarkedEdge[currentVertex]));
 		markEdge(*neighbour);
-		circuit.push_back(neighbour->m_Vertix);
-		currentVertex = neighbour->m_Vertix;
+		circuit.push_back(neighbour->m_Vertex);
+		currentVertex = neighbour->m_Vertex;
 		findNextUnmarkedEdge(io_NextUnmarkedEdge, currentVertex);
 	} 
 
@@ -171,7 +170,7 @@ void Graph::Print() const
 		cout << i << " | ";
 		for (auto& edge : m_Vertices[i])
 		{
-			cout << edge.m_Vertix << " ";
+			cout << edge.m_Vertex << " ";
 		}
 
 		cout << endl;
@@ -261,7 +260,7 @@ Graph Graph::createGraphTranspose() const
 
 		while (currVer != endItr)
 		{
-			res.AddEdge((*currVer).m_Vertix, i);
+			res.AddEdge((*currVer).m_Vertex, i);
 			++currVer;
 		}
 	}

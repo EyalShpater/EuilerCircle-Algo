@@ -9,16 +9,16 @@ class Graph
 {
 	struct Edge
 	{
-		int m_Vertix;
+		int m_Vertex;
 		bool m_IsMarked;
 		Edge* m_Parallel;
 
-		Edge(int i_Vertix = 0, Edge* i_Parallel = nullptr) : m_Vertix(i_Vertix),
+		Edge(int i_Vertex = 0, Edge* i_Parallel = nullptr) : m_Vertex(i_Vertex),
 			m_IsMarked(false), m_Parallel(i_Parallel) {}
 
 		bool operator==(const Edge& other) const
 		{
-			return m_Vertix == other.m_Vertix;
+			return m_Vertex == other.m_Vertex;
 		}
 	};
 
@@ -37,6 +37,9 @@ public:
 
 	void AddEdge(int i_inVert, int i_OutVert);
 	void DeleteEdge(int i_inVert, int i_OutVert);
+
+	int GetNumOfVertices() const { return m_NumOfVertices; }
+	int GetNumOfEdges() const { return m_NumOfEdges; }
 
 	bool IsConnected() const;
 	bool IsEulerian() const;

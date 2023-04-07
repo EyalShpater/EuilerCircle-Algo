@@ -1,38 +1,24 @@
 #include "Graph.h"
-#include <list>
-#include <algorithm>
-#include <iostream>
-using namespace std;
+#include "ConsoleIO.h"
 
-void print(int num) { cout << num << " "; }
+#define REF
 
 int main()
 {
-	int numOfVer, numOfEdges;
-	char answer;
-	bool isDir, isEulerian;
-	list<int> euler;
-
-	cout << "Is the graph directed : y / n" << endl;
-	cin >> answer >> numOfVer >> numOfEdges;
-	isDir = (answer == 'y');
-
-	Graph g(numOfVer, numOfEdges, isDir);
-
-	for (int i = 1; i <= numOfEdges; i++)
+	try
 	{
-		int in, out;
+		int numOfVer, numOfEdges;
+		bool isDir;
 
-		cin >> in >> out;
-		g.AddEdge(in, out);
+		ConsoleIO::GetUserInput(REF isDir, REF numOfVer, REF numOfEdges);
+		Graph g(numOfVer, numOfEdges, isDir);
+		ConsoleIO::GetEdgesFromUser(REF g);
+		ConsoleIO::PrintIfEulerian(REF g);
+
+		return 0;
 	}
-
-	isEulerian = g.Euler(euler);
-	if (isEulerian)
+	catch(const char* msg)
 	{
-		cout << "The graph is aulerian" << endl;
-		for_each(euler.begin(), euler.end(), [](int n) { cout << n << " "; });
+		cout << msg;
 	}
-
-	return 0;
 }
