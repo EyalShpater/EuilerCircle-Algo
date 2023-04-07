@@ -18,7 +18,7 @@ public:
 		cin >> answer >> o_NumOfVert >> o_NumOfEdges;
 		o_IsDirected = (answer == 'y');
 
-		if (answer != 'y' && answer != 'n')
+		if ((answer != 'y' && answer != 'n') || o_NumOfVert < 1 || o_NumOfEdges < 1)
 		{
 			throw "invalid input";
 		}
